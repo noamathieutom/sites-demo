@@ -7,77 +7,87 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--c:#9a5b2e;--ink:#1d1d1f;--mute:#5f6368;--bg:#faf8f5;--card:#fff}
+:root{--c:#9a5b2e;--ink:#1d1d1f;--mute:#5f6368;--bg:#faf8f5;--card:#fff;--enter:cubic-bezier(.22,1,.36,1)}
 *{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
 html,body{overflow-x:hidden}body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
 a:focus-visible{outline:3px solid var(--c);outline-offset:3px}
 .maquette{background:#111;color:#fff;font-size:13px;text-align:center;padding:8px 16px}
-header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px clamp(16px,5vw,64px);background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border-bottom:1px solid #eee;position:sticky;top:0;z-index:5}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px clamp(16px,5vw,64px);background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border-bottom:1px solid #eee;position:sticky;top:0;z-index:5}
 .logo{display:flex;gap:12px;align-items:center;font-family:Fraunces,serif;font-size:22px;overflow-wrap:anywhere}
 .mono{flex:none;width:42px;height:42px;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center;font-size:20px}
-.btn{display:inline-flex;align-items:center;gap:8px;background:var(--c);color:#fff;text-decoration:none;padding:12px 22px;border-radius:999px;font-weight:600;transition:transform .2s,box-shadow .2s}
-.btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.18)}
+.btn{position:relative;display:inline-flex;align-items:center;gap:8px;background:var(--c);color:#fff;text-decoration:none;padding:12px 22px;border-radius:999px;font-weight:600;touch-action:manipulation;transition:transform 160ms var(--enter)}
+.btn:active{transform:scale(.97);transition-duration:0s}
 .btn.alt{background:transparent;color:var(--c);border:2px solid var(--c)}
-.hero{position:relative;overflow:hidden;padding:clamp(64px,11vw,130px) clamp(16px,5vw,64px);color:#fff;
-background:linear-gradient(120deg,var(--c),#1d1d1f,var(--c));background-size:220% 220%;animation:flux 14s ease-in-out infinite}
-@keyframes flux{50%{background-position:100% 50%}}
-.bulle{position:absolute;border-radius:50%;background:rgba(255,255,255,.08);animation:flotte 9s ease-in-out infinite}
+.hero{position:relative;overflow:hidden;isolation:isolate;padding:clamp(64px,11vw,130px) clamp(16px,5vw,64px);color:#fff;background:var(--c)}
+.hero::before{content:"";position:absolute;inset:-50%;z-index:-1;background:linear-gradient(120deg,var(--c),#1d1d1f 48%,var(--c));animation:flux 16s ease-in-out infinite alternate}
+@keyframes flux{to{transform:translate3d(-18%,-8%,0) rotate(6deg)}}
+.bulle{position:absolute;z-index:-1;border-radius:50%;background:rgba(255,255,255,.08);animation:flotte 9s ease-in-out infinite}
 .b1{width:340px;height:340px;top:-120px;right:-80px}.b2{width:180px;height:180px;bottom:-60px;right:28%;animation-delay:-3s}.b3{width:90px;height:90px;top:30%;right:12%;animation-delay:-6s}
 @keyframes flotte{50%{transform:translateY(-18px) scale(1.05)}}
-.illus{position:absolute;right:clamp(-40px,4vw,80px);top:50%;width:clamp(220px,32vw,420px);transform:translateY(-50%) rotate(-8deg);color:rgba(255,255,255,.16);animation:tourne 18s ease-in-out infinite}
+.illus{position:absolute;z-index:-1;right:clamp(-40px,4vw,80px);top:50%;width:clamp(220px,32vw,420px);transform:translateY(-50%) rotate(-8deg);color:rgba(255,255,255,.2);animation:tourne 18s ease-in-out infinite}
 @keyframes tourne{50%{transform:translateY(-52%) rotate(4deg)}}
+.js .illus *{stroke-dasharray:1;stroke-dashoffset:1}
+.js .illus.vu *{animation:trace 1.8s cubic-bezier(.65,0,.35,1) .2s forwards}
+@keyframes trace{to{stroke-dashoffset:0}}
+.hors::before,.hors .bulle,.hors .illus{animation-play-state:paused}
 .hero>div{position:relative;max-width:640px}
 .hero small{text-transform:uppercase;letter-spacing:.15em;opacity:.85;font-size:13px}
 .hero h1{font-family:Fraunces,serif;font-size:clamp(36px,7vw,68px);line-height:1.1;margin:12px 0 16px;overflow-wrap:anywhere}
 .hero p{font-size:clamp(17px,2.4vw,21px);opacity:.92;margin-bottom:28px}
 .hero .btn{background:#fff;color:var(--c)}.hero .btn.alt{background:transparent;color:#fff;border-color:#fff}
-.entree{animation:monte .9s cubic-bezier(.2,.7,.2,1) both}.entree:nth-child(2){animation-delay:.12s}.entree:nth-child(3){animation-delay:.24s}.entree:nth-child(4){animation-delay:.36s}
-@keyframes monte{from{opacity:0;transform:translateY(24px)}}
+.entree{animation:monte .6s var(--enter) both}.entree:nth-child(2){animation-delay:60ms}.entree:nth-child(3){animation-delay:120ms}.entree:nth-child(4){animation-delay:180ms}
+@keyframes monte{from{opacity:0;transform:translateY(12px)}}
 .actions{display:flex;gap:12px;flex-wrap:wrap}
 section{padding:72px clamp(16px,5vw,64px);max-width:1100px;margin:auto}
 h2{font-family:Fraunces,serif;font-size:clamp(28px,4vw,36px);margin-bottom:8px}
 .trait{width:56px;height:4px;border-radius:4px;background:var(--c);margin-bottom:28px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
-.card{background:var(--card);border-radius:18px;padding:28px;box-shadow:0 1px 3px rgba(0,0,0,.06);border-top:4px solid var(--c);transition:transform .25s,box-shadow .25s}
-.card:hover{transform:translateY(-6px);box-shadow:0 14px 32px rgba(0,0,0,.1)}
+.card{position:relative;background:var(--card);border-radius:18px;padding:28px;box-shadow:0 1px 3px rgba(0,0,0,.06);border-top:4px solid var(--c);transition:transform 200ms var(--enter)}
+.card::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:0 14px 32px rgba(0,0,0,.12);opacity:0;transition:opacity 200ms ease;pointer-events:none}
+@media(hover:hover) and (pointer:fine){.btn:hover{transform:translateY(-2px)}.card:hover{transform:translateY(-4px)}.card:hover::after{opacity:1}}
 .card h3{display:flex;align-items:center;gap:10px;font-size:14px;text-transform:uppercase;letter-spacing:.1em;color:var(--c);margin-bottom:14px}
 .card h3 svg{width:22px;height:22px}
 .card a{color:var(--c);font-weight:600}
 ul{list-style:none;padding:0}li{display:flex;gap:10px;align-items:flex-start;margin:8px 0}
 li svg{flex:none;width:20px;height:20px;margin-top:3px;fill:none;stroke:var(--c);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-.bande{background:var(--c);color:#fff;text-align:center;padding:56px 16px;position:relative;overflow:hidden}
+.bande{background:var(--c);color:#fff;text-align:center;padding:56px 16px;position:relative;overflow:hidden;isolation:isolate}
 .bande h2{color:#fff;margin-bottom:12px}.bande p{opacity:.9;margin-bottom:24px}
 .bande .btn{background:#fff;color:var(--c);font-size:18px;padding:14px 28px}
-.bande .illus{left:-40px;right:auto;width:240px;color:rgba(255,255,255,.12)}
+.bande .illus{left:-40px;right:auto;width:240px;color:rgba(255,255,255,.14)}
 iframe{width:100%;height:340px;border:0;border-radius:18px;margin-top:20px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
 footer{text-align:center;color:var(--mute);font-size:14px;padding:40px 16px;border-top:1px solid #eee}
-.fixe{position:fixed;bottom:16px;right:16px;box-shadow:0 6px 20px rgba(0,0,0,.25);z-index:6;animation:pulse 2.6s ease-in-out infinite}
-@keyframes pulse{50%{box-shadow:0 6px 20px rgba(0,0,0,.25),0 0 0 10px rgba(0,0,0,0)}0%{box-shadow:0 6px 20px rgba(0,0,0,.25),0 0 0 0 rgba(0,0,0,.2)}}
-.js .r{opacity:0;transform:translateY(22px);transition:opacity .7s ease var(--d,0ms),transform .7s ease var(--d,0ms)}
+.fixe{position:fixed;bottom:16px;right:16px;box-shadow:0 6px 20px rgba(0,0,0,.25);z-index:6}
+.fixe::after{content:"";position:absolute;inset:0;border-radius:inherit;border:2px solid var(--c);animation:anneau 2.4s ease-out 1.5s 3 both;pointer-events:none}
+@keyframes anneau{from{transform:scale(1);opacity:.7}to{transform:scale(1.35);opacity:0}}
+.js .r{opacity:0;transform:translateY(16px);transition:opacity .5s var(--enter) var(--d,0ms),transform .5s var(--enter) var(--d,0ms)}
 .js .r.vu{opacity:1;transform:none}
 @media(min-width:800px){.fixe{display:none}}
 @media(max-width:600px){header .btn{display:none}.logo{font-size:19px}.illus{opacity:.6}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.js .r{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero::before,.bulle,.illus,.fixe::after{animation:none}
+.js .illus *{stroke-dashoffset:0;animation:none}.entree{animation:fondu .3s ease both}@keyframes fondu{from{opacity:0}}
+.js .r{transform:none;transition:opacity .3s ease}.btn,.card{transition:none}}
 </style>
 <script>document.documentElement.classList.add('js')</script>
 </head><body>
 <div class="maquette">Maquette proposée par Noa · site non officiel, non référencé</div>
 <header><div class="logo"><span class="mono">L</span>Le Fournil Des Gres</div><a class="btn" href="tel:+33325702317">03 25 70 23 17</a></header>
-<div class="hero"><span class="bulle b1"></span><span class="bulle b2"></span><span class="bulle b3"></span><svg class="illus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14c0-5 4-8 8-8s8 3 8 8v4H4z"/><path d="M9 9v5M12 8v6M15 9v5"/></svg>
+<div class="hero"><span class="bulle b1"></span><span class="bulle b2"></span><span class="bulle b3"></span><svg class="illus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path pathLength="1" d="M4 14c0-5 4-8 8-8s8 3 8 8v4H4z"/><path pathLength="1" d="M9 9v5M12 8v6M15 9v5"/></svg>
 <div><small class="entree" style="display:block">Boulangerie · Fontaine-les-Grès</small><h1 class="entree">Le Fournil Des Gres</h1><p class="entree">Pain frais et viennoiseries faits maison, chaque jour.</p>
 <div class="actions entree"><a class="btn" href="tel:+33325702317">Appeler</a><a class="btn alt" href="https://www.openstreetmap.org/directions?to=48.4260189,3.9174365">Itinéraire</a></div></div></div>
-<section><h2 class="r">Nos services</h2><div class="trait r"></div><div class="grid">
-<div class="card r"><h3><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14c0-5 4-8 8-8s8 3 8 8v4H4z"/><path d="M9 9v5M12 8v6M15 9v5"/></svg>Ce que nous proposons</h3><ul><li class="r" style="--d:0ms"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Pains traditionnels</span></li><li class="r" style="--d:80ms"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Viennoiseries</span></li><li class="r" style="--d:160ms"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Pâtisseries</span></li><li class="r" style="--d:240ms"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Commandes pour vos événements</span></li></ul></div>
-<div class="card r" style="--d:120ms"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Horaires</h3><p>Horaires sur demande : appelez-nous.</p></div>
-<div class="card r" style="--d:240ms"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Contact</h3><p>56 Avenue du Maréchal Foch, Fontaine-les-Grès<br><a href="tel:+33325702317">03 25 70 23 17</a></p></div>
+<section><h2 class="r">Nos services</h2><div class="trait"></div><div class="grid">
+<div class="card r"><h3><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14c0-5 4-8 8-8s8 3 8 8v4H4z"/><path d="M9 9v5M12 8v6M15 9v5"/></svg>Ce que nous proposons</h3><ul><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Pains traditionnels</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Viennoiseries</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Pâtisseries</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Commandes pour vos événements</span></li></ul></div>
+<div class="card r" style="--d:60ms"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Horaires</h3><p>Horaires sur demande : appelez-nous.</p></div>
+<div class="card r" style="--d:120ms"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Contact</h3><p>56 Avenue du Maréchal Foch, Fontaine-les-Grès<br><a href="tel:+33325702317">03 25 70 23 17</a></p></div>
 </div></section>
-<div class="bande"><svg class="illus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14c0-5 4-8 8-8s8 3 8 8v4H4z"/><path d="M9 9v5M12 8v6M15 9v5"/></svg><h2 class="r">Une question, une commande ?</h2><p class="r">Appelez-nous, on vous répond avec plaisir.</p><a class="btn r" href="tel:+33325702317">03 25 70 23 17</a></div>
-<section><h2 class="r">Nous trouver</h2><div class="trait r"></div><p class="r">56 Avenue du Maréchal Foch, Fontaine-les-Grès</p>
-<iframe class="r" loading="lazy" title="Carte : Le Fournil Des Gres" src="https://www.openstreetmap.org/export/embed.html?bbox=3.9114365,48.422018900000005,3.9234364999999998,48.4300189&marker=48.4260189,3.9174365"></iframe></section>
+<div class="bande"><svg class="illus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path pathLength="1" d="M4 14c0-5 4-8 8-8s8 3 8 8v4H4z"/><path pathLength="1" d="M9 9v5M12 8v6M15 9v5"/></svg><h2>Une question, une commande ?</h2><p>Appelez-nous, on vous répond avec plaisir.</p><a class="btn" href="tel:+33325702317">03 25 70 23 17</a></div>
+<section><h2 class="r">Nous trouver</h2><div class="trait"></div><p>56 Avenue du Maréchal Foch, Fontaine-les-Grès</p>
+<iframe loading="lazy" title="Carte : Le Fournil Des Gres" src="https://www.openstreetmap.org/export/embed.html?bbox=3.9114365,48.422018900000005,3.9234364999999998,48.4300189&marker=48.4260189,3.9174365"></iframe></section>
 <footer>© Le Fournil Des Gres · Boulangerie à Fontaine-les-Grès<br>Maquette non officielle réalisée par Noa, supprimée sur simple demande.</footer>
 <a class="btn fixe" href="tel:+33325702317">Appeler</a>
 <script>
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vu');io.unobserve(e.target)}}),{threshold:.15});
-document.querySelectorAll('.r').forEach(el=>io.observe(el));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vu');io.unobserve(e.target)}}),{threshold:.2});
+document.querySelectorAll('.r,.illus').forEach(el=>io.observe(el));
+const boucle=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle('hors',!e.isIntersecting)));
+document.querySelectorAll('.hero,.bande').forEach(el=>boucle.observe(el));
 </script>
 </body></html>
